@@ -1,0 +1,419 @@
+/* styles.css */
+
+:root {
+  /* Colors (Logo Palette) */
+  --color-logo-blue-dark: #04688e;
+  --color-logo-turquoise: #218a9a;
+  --color-logo-turquoise-darker: #1c7a88; /* For hover */
+  --color-logo-orange: #e87237;
+  --color-logo-yellow: #f2a933;
+
+  /* UI Colors */
+  --color-background: #f8f9fa;
+  --color-text-primary: #343a40;
+  --color-text-secondary: #555;
+  --color-text-tertiary: #666;
+  --color-primary-dark: var(--color-logo-blue-dark); /* Header */
+  --color-white: #fff;
+  --color-black: #000;
+  --color-accent: var(--color-logo-turquoise); /* Control buttons */
+  --color-accent-hover: var(--color-logo-turquoise-darker);
+  --color-success: var(--color-logo-orange); /* "Watch" button */
+  --color-warning: var(--color-logo-yellow); /* "Favorite" button */
+  --color-warning-text: #212529;
+  --color-border: #ced4da;
+  --color-border-light: #ddd;
+  --color-border-extra-light: #eee;
+  --color-light-grey: #e9ecef;
+  --color-dark-grey: #444;
+  --color-button-overlay: rgba(255, 255, 255, 0.8);
+
+  /* Spacing */
+  --spacing-small: 8px;
+  --spacing-base: 10px;
+  --spacing-medium: 15px;
+  --spacing-large: 20px;
+
+  /* Fonts */
+  --font-family-primary: Arial, sans-serif;
+  --font-size-base: 14px;
+  --font-size-large: 18px;
+  --font-size-xl: 20px;
+
+  /* Other */
+  --border-radius-default: 5px;
+  --border-radius-small: 4px;
+  --container-max-width: 1100px;
+  --shadow-card-hover: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+body {
+  font-family: var(--font-family-primary);
+  background-color: var(--color-logo-blue-dark);
+  margin: 0;
+  padding: 0;
+  color: var(--color-text-primary);
+  padding-top: 180px; /* Add padding to body to avoid overlap with fixed header */
+  transition: padding-top 0.3s ease; /* Smooth transition for padding */
+}
+
+#headerToggleBtn {
+  position: fixed;
+  top: 10px;
+  left: 10px;
+  z-index: 1002; /* Above the header */
+  background-color: var(--color-accent);
+  color: var(--color-white);
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  font-size: 20px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+  transition: transform 0.3s ease;
+}
+
+.container {
+  max-width: var(--container-max-width);
+  margin: 0 auto;
+  padding: var(--spacing-large);
+}
+
+header {
+  width: 100%;
+  z-index: 1001; /* Ensure header is above other content */
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: var(--color-primary-dark); /* Changé de --color-dark-grey */
+  color: var(--color-white);
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+  transition: transform 0.3s ease; /* Smooth transition for transform */
+}
+
+.header-hidden {
+  transform: translateY(-100%);
+}
+
+.header-content {
+  max-width: var(--container-max-width);
+  margin: 0 auto;
+  padding: var(--spacing-medium);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-medium);
+}
+
+.logo-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: var(--spacing-base);
+}
+
+.logo-container .logo {
+  height: 52px;
+  width: auto;
+}
+
+.controls {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: var(--spacing-base);
+}
+
+.controls input[type="text"],
+.controls input[type="hidden"],
+.controls select,
+.controls button {
+  padding: var(--spacing-small);
+  border-radius: var(--border-radius-small);
+  border: 1px solid var(--color-border);
+  font-size: var(--font-size-base);
+  min-width: 0; /* Fix for grid layout overflow */
+}
+
+.controls button {
+  background-color: var(--color-accent);
+  color: var(--color-white);
+  border: none;
+  cursor: pointer;
+}
+
+.controls button:hover {
+  background-color: var(--color-accent-hover);
+}
+
+.hidden {
+  display: none;
+}
+
+main {
+  /* margin-top can be removed as body padding handles it */
+  position: relative;
+}
+
+.player-container {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: var(--color-black);
+  padding: var(--spacing-base);
+  z-index: 1000;
+  border: 2px solid var(--color-dark-grey);
+  border-radius: var(--border-radius-default);
+  /* Additions for dragging and resizing */
+  cursor: move;
+  overflow: hidden;
+  width: 190px; height: 144px;/* Initial size */
+  min-width: 180px;
+  min-height: 120px;
+}
+
+.player-container video {
+  width: 100%;
+  height: 100%;
+  display: block;
+  cursor: default; /* Cursor returns to normal on the video */
+}
+
+.resize-handle {
+  position: absolute;
+  width: 15px;
+  height: 15px;
+  bottom: 0;
+  right: 0;
+  cursor: nwse-resize;
+  z-index: 1001;
+}
+
+#pipBtn, #closePlayerBtn {
+  position: absolute;
+  top: 5px;
+  background: var(--color-button-overlay);
+  border: none;
+  font-weight: bold;
+  cursor: pointer;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  line-height: 30px;
+  text-align: center;
+  transition: opacity 0.3s ease;
+  opacity: 0; /* Hidden by default */
+}
+
+#closePlayerBtn {
+  right: 10px;
+  font-size: var(--font-size-xl);
+}
+
+#pipBtn {
+  right: 45px; /* Next to the close button */
+  font-size: var(--font-size-base);
+  /* Additions for the icon */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.player-container:hover #pipBtn,
+.player-container:hover #closePlayerBtn {
+  opacity: 1; /* Visible on container hover */
+}
+
+.channel-card.playing {
+  border: 2px solid var(--color-logo-orange);
+  box-shadow: 0 0 10px var(--color-logo-orange);
+}
+
+.channel-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: var(--spacing-medium);
+}
+
+.channel-card {
+  background-color: var(--color-white);
+  border: 1px solid var(--color-border-light);
+  border-radius: var(--border-radius-default);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: box-shadow 0.2s;
+}
+
+.channel-card:hover {
+  box-shadow: var(--shadow-card-hover);
+}
+
+.channel-card .logo {
+  width: 100%;
+  object-fit: contain;
+  max-height: 140px;
+  background-color: var(--color-light-grey);
+}
+
+.channel-card .info {
+  padding: var(--spacing-base);
+  flex-grow: 1;
+}
+
+.channel-card .info h2 {
+  font-size: var(--font-size-large);
+  margin: 0 0 5px;
+}
+
+.channel-card .info p {
+  margin: 4px 0;
+  font-size: var(--font-size-base);
+  color: var(--color-text-secondary);
+}
+
+.card-buttons {
+  display: flex;
+  justify-content: space-between;
+  padding: var(--spacing-base);
+  border-top: 1px solid var(--color-border-extra-light);
+}
+
+.card-buttons button {
+  flex: 1;
+  margin: 0 2px;
+  padding: var(--spacing-small);
+  font-size: var(--font-size-base);
+  cursor: pointer;
+  border: none;
+  border-radius: var(--border-radius-small);
+}
+
+.card-buttons button.play-btn {
+  background-color: var(--color-success);
+  color: var(--color-white);
+}
+
+.card-buttons button.favorite-btn {
+  background-color: var(--color-warning);
+  color: var(--color-warning-text);
+}
+
+.card-buttons button:hover {
+  opacity: 0.9;
+}
+
+footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background-color: var(--color-dark-grey);
+  color: var(--color-white);
+  padding: var(--spacing-base);
+  border-top: 3px solid var(--color-logo-turquoise);
+  z-index: 1001;
+}
+
+.footer-content {
+  max-width: var(--container-max-width);
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--spacing-large);
+}
+
+footer p {
+  margin: 0;
+  color: var(--color-light-grey);
+}
+
+.feedback-form {
+  display: flex;
+  gap: var(--spacing-base);
+  align-items: center;
+}
+
+.feedback-form input,
+.feedback-form textarea {
+  padding: var(--spacing-small);
+  border-radius: var(--border-radius-small);
+  border: 1px solid var(--color-border);
+  font-size: var(--font-size-base);
+  background-color: var(--color-light-grey);
+  color: var(--color-text-primary);
+}
+
+.feedback-form textarea {
+  resize: vertical;
+  min-height: 30px;
+}
+
+.feedback-form button {
+  background-color: var(--color-accent);
+  color: var(--color-white);
+  border: none;
+  cursor: pointer;
+  padding: var(--spacing-small) var(--spacing-medium);
+  border-radius: var(--border-radius-small);
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-light-grey);
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: var(--color-logo-turquoise);
+  border-radius: 20px;
+  border: 3px solid var(--color-light-grey);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: var(--color-logo-turquoise-darker);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .header-content {
+    flex-direction: column;
+    align-items: center;
+  }
+  body {
+    padding-top: 250px; /* Adjust for taller header on mobile */
+  }
+  .footer-content {
+    flex-direction: column;
+    gap: var(--spacing-medium);
+  }
+}
+
+@media (max-width: 600px) {
+  .controls {
+    grid-template-columns: 1fr; /* Stack controls vertically */
+  }
+  .channel-list {
+    grid-template-columns: 1fr;
+  }
+  body {
+    padding-top: 420px; /* Further adjust for stacked controls */
+  }
+  .feedback-form {
+    flex-direction: column;
+    width: 100%;
+  }
+  .feedback-form input,
+  .feedback-form textarea,
+  .feedback-form button {
+    width: 100%;
+  }
+}
+

@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <title>IPTV Viewer Avancé</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="styles.css" />
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+  </head>
+  <body>
+    <button id="headerToggleBtn" title="Toggle Header">▲</button>
+    <header>
+      <div class="header-content">
+        <div class="logo-container">
+          <img src="img/opluriel tv.svg" alt="Logo Opluriel" class="logo" />
+          <span>Opluriel IPTV Viewer</span>
+        </div>
+
+        <div class="controls">
+          <input
+            type="text"
+            id="searchBox"
+            placeholder="Search for a channel..."
+          />
+
+          <input
+            type="hidden"
+            id="countryFilter"
+            list="countryList"
+            placeholder="Filter by country..."
+          />
+          <datalist id="countryList"></datalist>
+
+          <input
+            type="text"
+            id="groupLangFilter"
+            list="groupLangList"
+            placeholder="Filter by group or language..."
+          />
+          <datalist id="groupLangList"></datalist>
+
+          <select id="sortSelect">
+            <option value="name_asc">Name ↑</option>
+            <option value="name_desc">Name ↓</option>
+            <option value="country_asc">Country ↑</option>
+            <option value="country_desc">Country ↓</option>
+            <option value="group_asc">Group ↑</option>
+            <option value="group_desc">Group ↓</option>
+            <option value="language_asc">Language ↑</option>
+            <option value="language_desc">Language ↓</option>
+          </select>
+
+          <button id="showFavoritesBtn">My Favorites</button>
+          <button id="showAllBtn" class="hidden">Show All</button>
+        </div>
+      </div>
+    </header>
+
+    <div class="container">
+      <main>
+        <div id="playerContainer" class="player-container hidden">
+          <video id="videoPlayer" controls autoplay></video>
+          <button id="closePlayerBtn">×</button>
+          <button id="pipBtn" title="Picture-in-Picture">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              fill="currentColor"
+              viewBox="0 0 16 16"
+            >
+              <path
+                d="M0 3.5A1.5 1.5 0 0 1 1.5 2h13A1.5 1.5 0 0 1 16 3.5v9A1.5 1.5 0 0 1 14.5 14h-13A1.5 1.5 0 0 1 0 12.5v-9zM1.5 3a.5.5 0 0 0-.5.5v9a.5.5 0 0 0 .5.5h13a.5.5 0 0 0 .5-.5v-9a.5.5 0 0 0-.5-.5h-13z"
+              />
+              <path
+                d="M8 8.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 .5.5v3a.5.5 0 0 1-.5.5h-5a.5.5 0 0 1-.5-.5v-3z"
+              />
+            </svg>
+          </button>
+          <div class="resize-handle"></div>
+        </div>
+
+        <div id="channelList" class="channel-list">
+          <!-- Channels displayed here -->
+        </div>
+      </main>
+
+      <footer>
+        <div class="footer-content">
+          <p>&copy; 2025 Opluriel IPTV Viewer. All Rights Reserved.</p>
+          <p id="footerText">Loading channels...</p>
+        </div>
+      </footer>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
